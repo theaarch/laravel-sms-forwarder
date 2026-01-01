@@ -20,7 +20,8 @@ class SmsForwarderServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->configurePublishing();
+        $this->configureRoutes();
     }
 
     /**

@@ -1,7 +1,11 @@
 # SMS Forwarder
 
 ```bash
-composer require theaarch/laravel-sms-forwarder
+composer require theaarch64/laravel-sms-forwarder:dev-main
+```
+
+```bash
+php artisan vendor:publish --provider="Theaarch\SmsForwarder\PermissionServiceProvider"
 ```
 
 `app/Actions/SmsForwarder/HandleWebhook.php`
