@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\SmsForwarder;
+namespace App\Providers;
 
 use App\Actions\SmsForwarder\HandleWebhook;
 use Illuminate\Support\ServiceProvider;

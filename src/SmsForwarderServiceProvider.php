@@ -22,6 +22,7 @@ class SmsForwarderServiceProvider extends ServiceProvider
     {
         $this->configurePublishing();
         $this->configureRoutes();
+        $this->registerCommands();
     }
 
     /**
@@ -57,6 +58,18 @@ class SmsForwarderServiceProvider extends ServiceProvider
             ], function () {
                 $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
             });
+        }
+    }
+
+    /**
+     * Register the package's commands.
+     */
+    protected function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Console\InstallCommand::class,
+            ]);
         }
     }
 }
