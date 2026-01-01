@@ -1,5 +1,5 @@
 {
-    "name": "theaarch/laravel-sms-forwarder",
+    "name": "theaarch64/laravel-sms-forwarder",
     "require": {
         "php": "^8.2",
         "illuminate/console": "^11.0|^12.0",
