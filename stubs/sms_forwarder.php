@@ -2,7 +2,7 @@
 
 return [
 
-    'domain' => null,
+    'domain' => env('SMS_FORWARDER_DOMAIN'),
 
     'prefix' => env('SMS_FORWARDER_PREFIX', 'sms-forwarder'),
 
