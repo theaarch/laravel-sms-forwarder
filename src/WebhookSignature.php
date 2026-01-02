@@ -34,15 +34,6 @@ class WebhookSignature
         $expectedSignature = self::computeSignature($signedPayload, $secret);
 
         if (! hash_equals($expectedSignature, $signature)) {
-            if (app()->hasDebugModeEnabled()) {
-                app('log')->debug('Invalid signature', [
-                    'payload' => $payload,
-                    'timestamp' => $timestamp,
-                    'signature' => $signature,
-                    'expected_Signature' => $expectedSignature,
-                ]);
-            }
-
             throw SignatureVerificationException::factory(
                 'No signatures found matching the expected signature for payload',
                 $payload
@@ -50,7 +41,8 @@ class WebhookSignature
         }
 
         // Check if timestamp is within tolerance
-        if (($tolerance > 0) && (abs(time() - $timestamp) > $tolerance)) {
+        $t = (int) (microtime(true) * 1000);
+        if (($tolerance > 0) && (abs($t - $timestamp) > $tolerance)) {
             throw SignatureVerificationException::factory(
                 'Timestamp outside the tolerance zone',
                 $payload
