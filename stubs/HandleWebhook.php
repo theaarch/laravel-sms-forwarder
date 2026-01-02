@@ -17,7 +17,7 @@ class HandleWebhook implements HandlesWebhooks
      */
     public function handle(Request $request): Response
     {
-        Log::info('SMS Forwarder Webhook', $request->all());
+        Log::info('SmsForwarder Webhook', $request->all());
 
         // Your logic here...
 
