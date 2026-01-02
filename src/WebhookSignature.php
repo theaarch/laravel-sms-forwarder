@@ -18,13 +18,7 @@ class WebhookSignature
      */
     public static function verifyPayload(string $payload, string $secret, int $tolerance = null): bool
     {
-        $data = [];
-        $items = explode('&', $payload);
-
-        foreach ($items as $item) {
-            [$key, $value] = explode('=', $item, 2);
-            $data[$key] = $value;
-        }
+        $data = self::parsePayload($payload);
 
         $timestamp = $data['timestamp'] ?? null;
         $signature = $data['sign'] ?? null;
@@ -69,5 +63,20 @@ class WebhookSignature
         $binary = hash_hmac('sha256', $payload, $secret, true);
 
         return urlencode(base64_encode($binary));
+    }
+
+    private static function parsePayload(string $payload): array
+    {
+        // $data = [];
+        // $items = explode('&', $payload);
+        //
+        // foreach ($items as $item) {
+        //     [$key, $value] = explode('=', $item, 2);
+        //     $data[$key] = $value;
+        // }
+
+        parse_str($payload, $data);
+
+        return $data;
     }
 }
