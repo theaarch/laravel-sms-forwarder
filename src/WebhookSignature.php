@@ -35,7 +35,7 @@ class WebhookSignature
 
         if (! hash_equals($expectedSignature, $signature)) {
             if (app()->hasDebugModeEnabled()) {
-                logger()->debug('Invalid signature', [
+                app('log')->debug('Invalid signature', [
                     'payload' => $payload,
                     'timestamp' => $timestamp,
                     'signature' => $signature,
