@@ -19,8 +19,6 @@ it('can handle webhook calls', function () {
         return $mock;
     });
 
-    $payload = ['foo' => 'bar'];
-
     $raw = 'foo=bar';
     $response = $this->call(
         method: 'POST',
@@ -33,6 +31,8 @@ it('can handle webhook calls', function () {
     );
 
     $response->assertOk();
+
+    parse_str($raw, $payload);
 
     Event::assertDispatched(WebhookReceived::class, function ($event) use ($payload) {
         return $event->payload['foo'] == $payload['foo'];
@@ -57,13 +57,13 @@ it('verifies webhook signature when secret is set', function () {
         return $mock;
     });
 
-    $timestamp = time();
+    $timestamp = round((microtime(true) * 1000));
 
     $signedPayload = "{$timestamp}\n{$secret}";
     $binary = hash_hmac('sha256', $signedPayload, $secret, true);
     $signature = urlencode(base64_encode($binary));
 
-    $raw = "foo=bar&timestamp={$timestamp}&sign={$signature}";
+    $raw = "foo=bar&timestamp={$timestamp}&sign=".urlencode($signature);
     $response = $this->call(
         method: 'POST',
         uri: route('sms_forwarder.webhook'),
@@ -104,7 +104,7 @@ it('fails when signature is invalid', function () {
     $binary = hash_hmac('sha256', $signedPayload, $secret, true);
     $signature = urlencode(base64_encode($binary));
 
-    $raw = "foo=bar&timestamp={$timestamp}&sign={$signature}";
+    $raw = "foo=bar&timestamp={$timestamp}&sign=".urlencode($signature);
     $response = $this->call(
         method: 'POST',
         uri: route('sms_forwarder.webhook'),

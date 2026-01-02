@@ -25,10 +25,6 @@ class VerifyWebhookSignature
                 config('sms_forwarder.webhook.tolerance')
             );
         } catch (SignatureVerificationException $exception) {
-            if (app()->hasDebugModeEnabled()) {
-                report($exception);
-            }
-
             throw new AccessDeniedHttpException($exception->getMessage(), $exception);
         }
 

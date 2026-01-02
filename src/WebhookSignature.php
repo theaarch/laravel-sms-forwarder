@@ -34,15 +34,6 @@ class WebhookSignature
         $expectedSignature = self::computeSignature($signedPayload, $secret);
 
         if (! hash_equals($expectedSignature, $signature)) {
-            if (app()->hasDebugModeEnabled()) {
-                app('log')->debug('Invalid signature', [
-                    'payload' => $payload,
-                    'timestamp' => $timestamp,
-                    'signature' => $signature,
-                    'expected_signature' => $expectedSignature,
-                ]);
-            }
-
             throw SignatureVerificationException::factory(
                 'No signatures found matching the expected signature for payload',
                 $payload
@@ -50,7 +41,7 @@ class WebhookSignature
         }
 
         // Check if timestamp is within tolerance
-        $t = (int) (microtime(true) * 1000);
+        $t = round((microtime(true) * 1000));
         if (($tolerance > 0) && (abs($t - $timestamp) > ($tolerance * 1000))) {
             throw SignatureVerificationException::factory(
                 'Timestamp outside the tolerance zone',
@@ -75,16 +66,14 @@ class WebhookSignature
         return urlencode(base64_encode($binary));
     }
 
+    /**
+     * Parse the given payload string into an array.
+     *
+     * @param  string  $payload
+     * @return array
+     */
     private static function parsePayload(string $payload): array
     {
-        // $data = [];
-        // $items = explode('&', $payload);
-        //
-        // foreach ($items as $item) {
-        //     [$key, $value] = explode('=', $item, 2);
-        //     $data[$key] = $value;
-        // }
-
         parse_str($payload, $data);
 
         return $data;
