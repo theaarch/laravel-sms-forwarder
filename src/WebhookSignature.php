@@ -34,6 +34,15 @@ class WebhookSignature
         $expectedSignature = self::computeSignature($signedPayload, $secret);
 
         if (! hash_equals($expectedSignature, $signature)) {
+            if (app()->hasDebugModeEnabled()) {
+                app('log')->debug('Invalid signature', [
+                    'payload' => $payload,
+                    'timestamp' => $timestamp,
+                    'signature' => $signature,
+                    'expected_Signature' => $expectedSignature,
+                ]);
+            }
+
             throw SignatureVerificationException::factory(
                 'No signatures found matching the expected signature for payload',
                 $payload
