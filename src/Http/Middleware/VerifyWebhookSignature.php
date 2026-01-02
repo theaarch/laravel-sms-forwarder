@@ -20,7 +20,7 @@ class VerifyWebhookSignature
     {
         try {
             WebhookSignature::verifyPayload(
-                $request->input(),
+                $request->getContent(),
                 config('sms_forwarder.webhook.secret'),
                 config('sms_forwarder.webhook.tolerance')
             );
