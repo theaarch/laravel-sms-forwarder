@@ -1,13 +1,13 @@
 <?php
 
-namespace Theaarch\SmsForwarder;
+namespace Theaarch\Forwarder;
 
-use Theaarch\SmsForwarder\Exceptions\SignatureVerificationException;
+use Theaarch\Forwarder\Exceptions\SignatureVerificationException;
 
 class WebhookSignature
 {
     /**
-     * Verifies the signature payload sent by SmsForwarder.
+     * Verifies the signature payload sent by Forwarder.
      *
      * @param  string  $payload
      * @param  string  $secret

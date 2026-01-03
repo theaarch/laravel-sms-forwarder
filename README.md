@@ -1,56 +1,57 @@
-# Laravel SMS Forwarder
+# Laravel Forwarder
 
-A Laravel package to easily handle incoming SmsForwarder webhooks.
+A Laravel package to easily handle incoming Forwarder webhooks.
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require theaarch64/laravel-sms-forwarder:dev-main
+composer require theaarch64/laravel-forwarder:dev-main
 ```
 
 After installing, run the install command to scaffold the necessary files:
 
 ```bash
-php artisan sms-forwarder:install
+php artisan forwarder:install
 ```
 
 This command will:
-1. Publish the configuration file to `config/sms_forwarder.php`.
-2. Publish the webhook handler action to `app/Actions/SmsForwarder/HandleWebhook.php`.
-3. Publish and register the `SmsForwarderServiceProvider` in your application.
+1. Publish the configuration file to `config/forwarder.php`.
+2. Publish the webhook handler action to `app/Actions/Forwarder/HandleWebhook.php`.
+3. Publish and register the `ForwarderServiceProvider` in your application.
 
 ## Usage
 
 ### Handling Webhooks
 
-The package uses an Action class to handle incoming webhooks. After installation, you can find the handler at `app/Actions/SmsForwarder/HandleWebhook.php`.
+The package uses an Action class to handle incoming webhooks. After installation, you can find the handler at `app/Actions/Forwarder/HandleWebhook.php`.
 
-You should modify the `handle` method in this class to implement your custom logic (e.g., saving the SMS to the database, forwarding it to Telegram/Slack, etc.).
+You should modify the `handle` method in this class to implement your custom logic (e.g., saving the message to the database, forwarding it to Telegram/Slack, etc.).
 
 ```php
-namespace App\Actions\SmsForwarder;
+<?php
 
+namespace App\Actions\Forwarder;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
-use Theaarch\SmsForwarder\Contracts\HandlesWebhooks;
+use Theaarch\Forwarder\Contracts\HandlesWebhooks;
 
 class HandleWebhook implements HandlesWebhooks
 {
     /**
      * Handle a webhook call.
      *
-     * @param  array  $payload
+     * @param  Request  $request
      * @return Response
      */
-    public function handle(array $payload): Response
+    public function handle(Request $request): Response
     {
-        Log::info('SMS Forwarder Webhook Received', $payload);
+        Log::info('Webhook Received', $request->all());
 
-        // Access payload data
-        // $from = $payload['from'] ?? null;
-        // $message = $payload['content'] ?? null;
+        // Your logic here...
 
         return new Response('Webhook Handled', Response::HTTP_OK);
     }
@@ -59,17 +60,17 @@ class HandleWebhook implements HandlesWebhooks
 
 ### Configuration
 
-You can configure the package in `config/sms_forwarder.php`.
+You can configure the package in `config/forwarder.php`.
 
 #### Route Prefix
-By default, the webhook route is available at `/sms-forwarder/webhook`. You can change the prefix in the config or via `.env`:
+By default, the webhook route is available at `/forwarder/webhook`. You can change the prefix in the config or via `.env`:
 
 ```env
-SMS_FORWARDER_PREFIX=custom-prefix
+FORWARDER_PREFIX=custom-prefix
 ```
 
 #### Middleware
-You can add custom middleware to the webhook route in `config/sms_forwarder.php`:
+You can add custom middleware to the webhook route in `config/forwarder.php`:
 
 ```php
 'middleware' => ['api'],
@@ -81,7 +82,7 @@ To ensure that the webhook requests are coming from a trusted source, you should
 
 1. Set the secret in your `.env` file:
    ```env
-   SMS_FORWARDER_WEBHOOK_SECRET=your-secret-key
+   FORWARDER_WEBHOOK_SECRET=your-secret-key
    ```
 
 2. The package will automatically verify the signature included in the request body (`sign` parameter) using this secret.

@@ -9,7 +9,7 @@ class TestCase extends BaseTestCase
     protected function getPackageProviders($app): array
     {
         return [
-            \Theaarch\SmsForwarder\SmsForwarderServiceProvider::class,
+            \Theaarch\Forwarder\ForwarderServiceProvider::class,
         ];
     }
 }

@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Config;
-use Theaarch\SmsForwarder\Contracts\HandlesWebhooks;
-use Theaarch\SmsForwarder\Events\WebhookHandled;
-use Theaarch\SmsForwarder\Events\WebhookReceived;
-use Theaarch\SmsForwarder\SmsForwarder;
+use Theaarch\Forwarder\Contracts\HandlesWebhooks;
+use Theaarch\Forwarder\Events\WebhookHandled;
+use Theaarch\Forwarder\Events\WebhookReceived;
+use Theaarch\Forwarder\Forwarder;
 
 it('can handle webhook calls', function () {
     Event::fake();
@@ -15,14 +15,14 @@ it('can handle webhook calls', function () {
         response('ok')
     );
 
-    SmsForwarder::handleWebhookUsing(function () use ($mock) {
+    Forwarder::handleWebhookUsing(function () use ($mock) {
         return $mock;
     });
 
     $raw = 'foo=bar';
     $response = $this->call(
         method: 'POST',
-        uri: route('sms_forwarder.webhook'),
+        uri: route('forwarder.webhook'),
         server: [
             'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
             'CONTENT_LENGTH' => strlen($raw),
@@ -54,14 +54,14 @@ it('can handle webhook calls', function () {
 it('verifies webhook signature when secret is set', function () {
     $secret = 'test-secret';
 
-    Config::set('sms_forwarder.webhook.secret', $secret);
+    Config::set('forwarder.webhook.secret', $secret);
 
     $mock = Mockery::mock(HandlesWebhooks::class);
     $mock->shouldReceive('handle')->andReturn(
         response('ok')
     );
 
-    SmsForwarder::handleWebhookUsing(function () use ($mock) {
+    Forwarder::handleWebhookUsing(function () use ($mock) {
         return $mock;
     });
 
@@ -74,7 +74,7 @@ it('verifies webhook signature when secret is set', function () {
     $raw = "foo=bar&timestamp={$timestamp}&sign=".urlencode($signature);
     $response = $this->call(
         method: 'POST',
-        uri: route('sms_forwarder.webhook'),
+        uri: route('forwarder.webhook'),
         server: [
             'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
             'CONTENT_LENGTH' => strlen($raw),
@@ -86,12 +86,12 @@ it('verifies webhook signature when secret is set', function () {
 });
 
 it('fails when signature is missing but secret is set', function () {
-    Config::set('sms_forwarder.webhook.secret', 'test-secret');
+    Config::set('forwarder.webhook.secret', 'test-secret');
 
     $raw = "foo=bar";
     $response = $this->call(
         method: 'POST',
-        uri: route('sms_forwarder.webhook'),
+        uri: route('forwarder.webhook'),
         server: [
             'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
             'CONTENT_LENGTH' => strlen($raw),
@@ -103,7 +103,7 @@ it('fails when signature is missing but secret is set', function () {
 });
 
 it('fails when signature is invalid', function () {
-    Config::set('sms_forwarder.webhook.secret', 'test-secret');
+    Config::set('forwarder.webhook.secret', 'test-secret');
 
     $timestamp = time();
     $secret = 'wrong-secret';
@@ -115,7 +115,7 @@ it('fails when signature is invalid', function () {
     $raw = "foo=bar&timestamp={$timestamp}&sign=".urlencode($signature);
     $response = $this->call(
         method: 'POST',
-        uri: route('sms_forwarder.webhook'),
+        uri: route('forwarder.webhook'),
         server: [
             'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
             'CONTENT_LENGTH' => strlen($raw),

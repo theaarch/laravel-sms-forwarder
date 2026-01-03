@@ -1,18 +1,18 @@
 <?php
 
-namespace Theaarch\SmsForwarder;
+namespace Theaarch\Forwarder;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
-class SmsForwarderServiceProvider extends ServiceProvider
+class ForwarderServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/sms_forwarder.php', 'sms_forwarder');
+        $this->mergeConfigFrom(__DIR__.'/../config/forwarder.php', 'forwarder');
     }
 
     /**
@@ -34,13 +34,13 @@ class SmsForwarderServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../stubs/sms_forwarder.php' => $this->app->configPath('sms_forwarder.php'),
-            ], 'sms-forwarder-config');
+                __DIR__ . '/../stubs/forwarder.php' => $this->app->configPath('forwarder.php'),
+            ], 'forwarder-config');
 
             $this->publishes([
-                __DIR__.'/../stubs/HandleWebhook.php' => $this->app->basePath('app/Actions/SmsForwarder/HandleWebhook.php'),
-                __DIR__.'/../stubs/SmsForwarderServiceProvider.php' => $this->app->basePath('app/Providers/SmsForwarderServiceProvider.php'),
-            ], 'sms-forwarder-support');
+                __DIR__.'/../stubs/HandleWebhook.php' => $this->app->basePath('app/Actions/Forwarder/HandleWebhook.php'),
+                __DIR__ . '/../stubs/ForwarderServiceProvider.php' => $this->app->basePath('app/Providers/ForwarderServiceProvider.php'),
+            ], 'forwarder-support');
         }
     }
 
@@ -51,11 +51,11 @@ class SmsForwarderServiceProvider extends ServiceProvider
      */
     protected function configureRoutes(): void
     {
-        if (SmsForwarder::$registersRoutes) {
+        if (Forwarder::$registersRoutes) {
             Route::group([
-                'domain' => config('sms_forwarder.domain', null),
-                'prefix' => config('sms_forwarder.prefix'),
-                'as' => 'sms_forwarder.',
+                'domain' => config('forwarder.domain', null),
+                'prefix' => config('forwarder.prefix'),
+                'as' => 'forwarder.',
             ], function () {
                 $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
             });

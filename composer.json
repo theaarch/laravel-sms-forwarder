@@ -1,7 +1,7 @@
 {
-    "name": "theaarch64/laravel-sms-forwarder",
-    "description": "Laravel SMS Forwarder.",
-    "keywords": ["laravel", "sms", "forwarder"],
+    "name": "theaarch64/laravel-forwarder",
+    "description": "Laravel Forwarder.",
+    "keywords": ["laravel", "message", "forwarder"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Theaarch\\SmsForwarder\\": "src/"
+            "Theaarch\\Forwarder\\": "src/"
         }
     },
     "autoload-dev": {
@@ -33,7 +33,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Theaarch\\SmsForwarder\\SmsForwarderServiceProvider"
+              "Theaarch\\Forwarder\\ForwarderServiceProvider"
             ]
         }
     },

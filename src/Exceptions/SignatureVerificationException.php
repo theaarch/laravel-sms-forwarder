@@ -1,6 +1,6 @@
 <?php
 
-namespace Theaarch\SmsForwarder\Exceptions;
+namespace Theaarch\Forwarder\Exceptions;
 
 use Exception;
 

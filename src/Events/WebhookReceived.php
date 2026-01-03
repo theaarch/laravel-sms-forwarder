@@ -1,6 +1,6 @@
 <?php
 
-namespace Theaarch\SmsForwarder\Events;
+namespace Theaarch\Forwarder\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Http\Request;

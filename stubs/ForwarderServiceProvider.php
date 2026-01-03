@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Actions\SmsForwarder\HandleWebhook;
+use App\Actions\Forwarder\HandleWebhook;
 use Illuminate\Support\ServiceProvider;
-use Theaarch\SmsForwarder\SmsForwarder;
+use Theaarch\Forwarder\Forwarder;
 
-class SmsForwarderServiceProvider extends ServiceProvider
+class ForwarderServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -21,6 +21,6 @@ class SmsForwarderServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        SmsForwarder::handleWebhookUsing(HandleWebhook::class);
+        Forwarder::handleWebhookUsing(HandleWebhook::class);
     }
 }

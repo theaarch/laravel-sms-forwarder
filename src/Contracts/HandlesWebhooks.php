@@ -1,6 +1,6 @@
 <?php
 
-namespace Theaarch\SmsForwarder\Contracts;
+namespace Theaarch\Forwarder\Contracts;
 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

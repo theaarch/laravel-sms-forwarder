@@ -1,13 +1,13 @@
 <?php
 
-namespace Theaarch\SmsForwarder\Console;
+namespace Theaarch\Forwarder\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Theaarch\SmsForwarder\SmsForwarderServiceProvider;
+use Theaarch\Forwarder\ForwarderServiceProvider;
 
-#[AsCommand(name: 'sms-forwarder:install')]
+#[AsCommand(name: 'forwarder:install')]
 class InstallCommand extends Command
 {
     /**
@@ -15,14 +15,14 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sms-forwarder:install';
+    protected $signature = 'forwarder:install';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Install all of the SmsForwarder';
+    protected $description = 'Install all of the Forwarder';
 
     /**
      * Execute the console command.
@@ -30,16 +30,16 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->callSilent('vendor:publish', [
-            '--provider' => SmsForwarderServiceProvider::class,
+            '--provider' => ForwarderServiceProvider::class,
         ]);
 
         $this->registerPaymentServiceProvider();
 
-        $this->components->info('SmsForwarder scaffolding installed successfully.');
+        $this->components->info('Forwarder scaffolding installed successfully.');
     }
 
     /**
-     * Register the SmsForwarder service provider in the application configuration file.
+     * Register the Forwarder service provider in the application configuration file.
      */
     protected function registerPaymentServiceProvider(): void
     {
@@ -47,6 +47,6 @@ class InstallCommand extends Command
             return;
         }
 
-        ServiceProvider::addProviderToBootstrapFile(\App\Providers\SmsForwarderServiceProvider::class);
+        ServiceProvider::addProviderToBootstrapFile(\App\Providers\ForwarderServiceProvider::class);
     }
 }

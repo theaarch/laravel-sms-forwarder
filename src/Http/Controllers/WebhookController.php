@@ -1,28 +1,28 @@
 <?php
 
-namespace Theaarch\SmsForwarder\Http\Controllers;
+namespace Theaarch\Forwarder\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Theaarch\SmsForwarder\Contracts\HandlesWebhooks;
-use Theaarch\SmsForwarder\Events\WebhookHandled;
-use Theaarch\SmsForwarder\Events\WebhookReceived;
-use Theaarch\SmsForwarder\Http\Middleware\VerifyWebhookSignature;
+use Theaarch\Forwarder\Contracts\HandlesWebhooks;
+use Theaarch\Forwarder\Events\WebhookHandled;
+use Theaarch\Forwarder\Events\WebhookReceived;
+use Theaarch\Forwarder\Http\Middleware\VerifyWebhookSignature;
 
 class WebhookController extends Controller
 {
     public function __construct()
     {
-        if (config('sms_forwarder.webhook.secret')) {
+        if (config('forwarder.webhook.secret')) {
             $this->middleware(VerifyWebhookSignature::class);
         }
     }
 
     /**
-     * Handle a SmsForwarder webhook call.
+     * Handle a Forwarder webhook call.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Theaarch\SmsForwarder\Contracts\HandlesWebhooks  $handler
+     * @param  \Theaarch\Forwarder\Contracts\HandlesWebhooks  $handler
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, HandlesWebhooks $handler)

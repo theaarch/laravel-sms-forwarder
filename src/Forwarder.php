@@ -1,13 +1,13 @@
 <?php
 
-namespace Theaarch\SmsForwarder;
+namespace Theaarch\Forwarder;
 
-use Theaarch\SmsForwarder\Contracts\HandlesWebhooks;
+use Theaarch\Forwarder\Contracts\HandlesWebhooks;
 
-class SmsForwarder
+class Forwarder
 {
     /**
-     * Indicates if SmsForwarder routes will be registered.
+     * Indicates if Forwarder routes will be registered.
      *
      * @var bool
      */
@@ -25,7 +25,7 @@ class SmsForwarder
     }
 
     /**
-     * Configure SmsForwarder to not register its routes.
+     * Configure Forwarder to not register its routes.
      *
      * @return static
      */

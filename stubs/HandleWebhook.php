@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Actions\SmsForwarder;
+namespace App\Actions\Forwarder;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
-use Theaarch\SmsForwarder\Contracts\HandlesWebhooks;
+use Theaarch\Forwarder\Contracts\HandlesWebhooks;
 
 class HandleWebhook implements HandlesWebhooks
 {
@@ -17,7 +17,7 @@ class HandleWebhook implements HandlesWebhooks
      */
     public function handle(Request $request): Response
     {
-        Log::info('SmsForwarder Webhook', $request->all());
+        Log::info('Webhook Received', $request->all());
 
         // Your logic here...
 

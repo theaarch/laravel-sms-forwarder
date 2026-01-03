@@ -1,13 +1,13 @@
 <?php
 
-namespace Theaarch\SmsForwarder\Http\Middleware;
+namespace Theaarch\Forwarder\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Theaarch\SmsForwarder\Exceptions\SignatureVerificationException;
-use Theaarch\SmsForwarder\WebhookSignature;
+use Theaarch\Forwarder\Exceptions\SignatureVerificationException;
+use Theaarch\Forwarder\WebhookSignature;
 
 class VerifyWebhookSignature
 {
@@ -21,8 +21,8 @@ class VerifyWebhookSignature
         try {
             WebhookSignature::verifyPayload(
                 $request->getContent(),
-                config('sms_forwarder.webhook.secret'),
-                config('sms_forwarder.webhook.tolerance')
+                config('forwarder.webhook.secret'),
+                config('forwarder.webhook.tolerance')
             );
         } catch (SignatureVerificationException $exception) {
             throw new AccessDeniedHttpException($exception->getMessage(), $exception);
